@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2022-05-16T14:46:51Z"
+  labels:
+    app: metrics-client
+  name: metrics-client
+  namespace: default
+  resourceVersion: "59708"
+  uid: b562961e-5a1d-422c-9d87-456687da0b7f
+spec:
+  clusterIP: 10.99.100.100
+  clusterIPs:
+  - 10.99.100.100
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: metrics-client
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

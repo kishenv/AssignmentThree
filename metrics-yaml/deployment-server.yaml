@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: metrics-server
+  name: metrics-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metrics-server
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: metrics-server
+    spec:
+      containers:
+      - image: localhost:5000/server:latest
+        imagePullPolicy: Always
+        name: server
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: kube-api-access-g6vkn
+          readOnly: true
+        - mountPath: /var/logs/
+          name: log-dir
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: minikube
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 300
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 300
+      volumes:
+      - hostPath:
+          path: /home/rooty/logs/
+          type: ""
+        name: log-dir
+      - name: kube-api-access-g6vkn
+        projected:
+          defaultMode: 420
+          sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+              - key: ca.crt
+                path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+                path: namespace
+
