@@ -47,6 +47,8 @@ On re-deploying the metrics-client deployment, the heartbeats are received by th
 **Cleanup to remove deployments and the associated services**
 The deployments and services for metrics-server and metrics-client can be removed from the cluster using the files under metrics-yaml directory. 
 
+```bash
 kubectl delete -f <directory-containing-yaml-files>/
+```
 
 [![Cleanup](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/CleanUp.png?raw=true "Cleanup")](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/CleanUp.png?raw=true "Cleanup")
