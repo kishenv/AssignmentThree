@@ -11,9 +11,9 @@
 ##### Commands to deploy the Client-Server pods to exhange Data.
 
 ```bash
-kubectl apply -f metrics-yaml/
+kubectl apply -f <directory-containing-yaml-files>/
 kubectl logs -f <pod-name>
-kubectl delete -f metrics-yaml/
+kubectl delete -f <directory-containing-yaml-files>/
 ```
 Validation environment:
 * minikube : v1.25.2
@@ -33,13 +33,20 @@ The exchange of data with regards to the heartbeat and metrics that are sent by 
 **Logs from server**
 [![Server Logs ](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/Server.png?raw=true "Server Logs ")](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/Server.png?raw=true "Server Logs ")
 
-** Behavior of the server on termination of the client pod by deleting  deployment.**
+**Behavior of the server on termination of the client pod by deleting  deployment.**
 
-On deleting the metrics-client deployment, the server rolls back to reporting the lost connection once every 10 seconds, after 3 consecutive heartbeats are not received by the server.
+On deleting the metrics-client deployment, the server rolls back to reporting the lost connection once every 10 seconds, after 3 consecutive heartbeats from the client are not received by the server.
 
 [![Disconnection](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/LostConnection.png?raw=true "Disconnection")](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/LostConnection.png?raw=true "Disconnection")
 
-** Behavior of server on re-deploying the client pod.**
+**Behavior of server on re-deploying the client pod.**
 On re-deploying the metrics-client deployment, the heartbeats are received by the server with the metrics re-captured.
 
 [![DisconnRecon](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/DisconnectAndReconnect.png?raw=true "DisconnRecon")](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/DisconnectAndReconnect.png?raw=true "DisconnRecon")
+
+**Cleanup to remove deployments and the associated services**
+The deployments and services for metrics-server and metrics-client can be removed from the cluster using the files under metrics-yaml directory. 
+
+kubectl delete -f <directory-containing-yaml-files>/
+
+[![Cleanup](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/CleanUp.png?raw=true "Cleanup")](https://github.com/kishenv/AssignmentThree/blob/main/Screenshots/CleanUp.png?raw=true "Cleanup")
